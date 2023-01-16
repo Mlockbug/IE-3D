@@ -43,6 +43,8 @@ public class CharacterControl : MonoBehaviour
         if (holding)
         {
             held.transform.position = pickupLocation.transform.position;
+            //held.transform.position = Vector3.Lerp(held.transform.position, pickupLocation.transform.position, Time.deltaTime);
+            held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
         }
     }
 
@@ -56,6 +58,7 @@ public class CharacterControl : MonoBehaviour
             Debug.DrawRay(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition).origin, cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition).direction * pickupDistance, Color.yellow, 10);
             hit.collider.transform.parent = pickupLocation.transform;
             hit.collider.transform.position = pickupLocation.transform.position;
+            hit.collider.attachedRigidbody.useGravity = false;
             held = hit.collider.gameObject;
             holding = true;
         }
