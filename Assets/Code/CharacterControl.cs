@@ -18,6 +18,7 @@ public class CharacterControl : MonoBehaviour
     public GameObject pickupLocation;
     bool holding = false;
     GameObject held;
+    public float heldForce = 200f;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,7 +43,20 @@ public class CharacterControl : MonoBehaviour
         
         if (holding)
         {
-            held.transform.position = pickupLocation.transform.position;
+            if (Vector3.Distance(held.transform.position, pickupLocation.transform.position)>0.1f)
+			{
+                Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
+                held.GetComponent<Rigidbody>().AddForce(moveDirection * heldForce);
+			}
+            else if (Vector3.Distance(held.transform.position, pickupLocation.transform.position) > 0.001f)
+            {
+                Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
+                held.GetComponent<Rigidbody>().AddForce(moveDirection);
+            }
+            else
+			{
+                held.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
             //held.transform.position = Vector3.Lerp(held.transform.position, pickupLocation.transform.position, Time.deltaTime);
             held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
         }
@@ -60,6 +74,7 @@ public class CharacterControl : MonoBehaviour
             hit.collider.transform.position = pickupLocation.transform.position;
             hit.collider.attachedRigidbody.useGravity = false;
             held = hit.collider.gameObject;
+            held.GetComponent<Rigidbody>().drag = 10f;
             holding = true;
         }
     }
