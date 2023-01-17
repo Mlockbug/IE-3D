@@ -19,6 +19,7 @@ public class CharacterControl : MonoBehaviour
     bool holding = false;
     GameObject held;
     public float heldForce = 200f;
+    public float throwForce = 50f;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -38,44 +39,66 @@ public class CharacterControl : MonoBehaviour
         //pickupLocation.transform.position = Input.mousePosition;
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Pickup();
+            PickupAndDrop(0f);
         }
         
         if (holding)
         {
-            if (Vector3.Distance(held.transform.position, pickupLocation.transform.position)>0.1f)
-			{
-                Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
-                held.GetComponent<Rigidbody>().AddForce(moveDirection * heldForce);
-			}
-            else if (Vector3.Distance(held.transform.position, pickupLocation.transform.position) > 0.001f)
+            if (Input.GetMouseButtonDown(0))
             {
-                Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
-                held.GetComponent<Rigidbody>().AddForce(moveDirection);
+                PickupAndDrop(throwForce);
             }
             else
-			{
-                held.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            {
+                if (Vector3.Distance(held.transform.position, pickupLocation.transform.position) > 0.1f)
+                {
+                    Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
+                    held.GetComponent<Rigidbody>().AddForce(moveDirection * heldForce);
+                }
+                else if (Vector3.Distance(held.transform.position, pickupLocation.transform.position) > 0.001f)
+                {
+                    Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
+                    held.GetComponent<Rigidbody>().AddForce(moveDirection);
+                }
+                else
+                {
+                    held.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                }
+                //held.transform.position = Vector3.Lerp(held.transform.position, pickupLocation.transform.position, Time.deltaTime);
+                held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
             }
-            //held.transform.position = Vector3.Lerp(held.transform.position, pickupLocation.transform.position, Time.deltaTime);
-            held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
         }
     }
 
-    void Pickup()
+    void PickupAndDrop(float force)
     {
-        RaycastHit hit;
-        int layerMask = 1 << 8;
-        if (Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, layerMask))
+        if (holding)
         {
-            Debug.Log("Hit");
-            Debug.DrawRay(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition).origin, cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition).direction * pickupDistance, Color.yellow, 10);
-            hit.collider.transform.parent = pickupLocation.transform;
-            hit.collider.transform.position = pickupLocation.transform.position;
-            hit.collider.attachedRigidbody.useGravity = false;
-            held = hit.collider.gameObject;
-            held.GetComponent<Rigidbody>().drag = 10f;
-            holding = true;
+            held.transform.parent = null;
+            held.GetComponent<Rigidbody>().useGravity = true;
+            held.GetComponent<Rigidbody>().drag = 0f;
+            held.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            held.GetComponent<Rigidbody>().AddForce((held.transform.position - transform.position) * force);
+            held = null;
+            holding = false;
+        }
+        else
+        {
+            RaycastHit hit;
+            int layerMask = 1 << 8;
+            if (Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, layerMask))
+            {
+                Debug.Log("Hit");
+                Debug.DrawRay(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition).origin, cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition).direction * pickupDistance, Color.yellow, 10);
+                hit.collider.transform.parent = pickupLocation.transform;
+                hit.collider.transform.position = pickupLocation.transform.position;
+                hit.collider.attachedRigidbody.useGravity = false;
+                held = hit.collider.gameObject;
+                held.GetComponent<Rigidbody>().drag = 10f;
+                pickupLocation.AddComponent<Collider>();
+                //pickupLocation.GetComponent<Collider>() = hit.collider;
+                holding = true;
+            }
         }
     }
 }
