@@ -41,36 +41,29 @@ public class CharacterControl : MonoBehaviour
         {
             PickupAndDrop(0f);
         }
-        
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            PickupAndDrop(throwForce);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+		{
+            moveSpeed = 10f;
+		}
+        else
+		{
+            moveSpeed = 5f;
+		}
+
         if (holding)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                PickupAndDrop(throwForce);
-            }
-            else
-            {
-                if (Vector3.Distance(held.transform.position, pickupLocation.transform.position) > 0.1f)
-                {
-                    Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
-                    held.GetComponent<Rigidbody>().AddForce(moveDirection * heldForce);
-                }
-                else if (Vector3.Distance(held.transform.position, pickupLocation.transform.position) > 0.001f)
-                {
-                    Vector3 moveDirection = (pickupLocation.transform.position - held.transform.position);
-                    held.GetComponent<Rigidbody>().AddForce(moveDirection);
-                }
-                else
-                {
-                    held.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                }
-                //held.transform.position = Vector3.Lerp(held.transform.position, pickupLocation.transform.position, Time.deltaTime);
-                held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
-            }
+            held.transform.position = pickupLocation.transform.position;
+            held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
         }
     }
 
-    void PickupAndDrop(float force)
+    public void PickupAndDrop(float force)
     {
         if (holding)
         {
@@ -78,7 +71,16 @@ public class CharacterControl : MonoBehaviour
             held.GetComponent<Rigidbody>().useGravity = true;
             held.GetComponent<Rigidbody>().drag = 0f;
             held.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            held.GetComponent<Rigidbody>().AddForce((held.transform.position - transform.position) * force);
+            if (rb.velocity.magnitude > 1f)
+			{
+                held.GetComponent<Rigidbody>().AddForce((held.transform.position - transform.position) * force * (rb.velocity.magnitude/2));
+			}
+            else
+			{
+                held.GetComponent<Rigidbody>().AddForce((held.transform.position - transform.position) * force);
+
+            }
+            Destroy(held.GetComponent<ForceDrop>());
             held = null;
             holding = false;
         }
@@ -95,8 +97,7 @@ public class CharacterControl : MonoBehaviour
                 hit.collider.attachedRigidbody.useGravity = false;
                 held = hit.collider.gameObject;
                 held.GetComponent<Rigidbody>().drag = 10f;
-                pickupLocation.AddComponent<Collider>();
-                //pickupLocation.GetComponent<Collider>() = hit.collider;
+                held.AddComponent<ForceDrop>();
                 holding = true;
             }
         }
