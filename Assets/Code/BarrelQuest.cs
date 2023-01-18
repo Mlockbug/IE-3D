@@ -20,7 +20,12 @@ public class BarrelQuest : MonoBehaviour
 	{
 		if (other.tag == "barrel")
 		{
+            if (other.attachedRigidbody.useGravity == false)
+			{
+                FindObjectOfType<CharacterControl>().PickupAndDrop(0f);
+			}
             Destroy(other.gameObject);
+            FindObjectOfType<CharacterControl>().PoemExtention(Random.Range(3,5));
 		}
 	}
 }

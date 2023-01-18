@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterControl : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class CharacterControl : MonoBehaviour
     GameObject held;
     public float heldForce = 200f;
     public float throwForce = 50f;
+    public GameObject poem;
+    public Text poemText;
+    public Image poemBackground;
+    int lines;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -41,12 +46,10 @@ public class CharacterControl : MonoBehaviour
         {
             PickupAndDrop(0f);
         }
-
         if (Input.GetMouseButtonDown(0))
         {
             PickupAndDrop(throwForce);
         }
-
         if (Input.GetKey(KeyCode.LeftShift))
 		{
             moveSpeed = 10f;
@@ -54,6 +57,14 @@ public class CharacterControl : MonoBehaviour
         else
 		{
             moveSpeed = 5f;
+		}
+        if (Input.GetKey(KeyCode.Tab))
+		{
+            poem.SetActive(true);
+		}
+		else
+		{
+            poem.SetActive(false);
 		}
 
         if (holding)
@@ -101,5 +112,13 @@ public class CharacterControl : MonoBehaviour
                 holding = true;
             }
         }
+    }
+
+    public void PoemExtention(int impact)
+	{
+        lines += impact;
+        lines = Mathf.Clamp(lines, 0, 16);
+        poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(350, (lines*15));
+        poemBackground.GetComponent<RectTransform>().sizeDelta = new Vector2(375, (lines * 15)+30);
     }
 }
