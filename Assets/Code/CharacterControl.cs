@@ -25,6 +25,7 @@ public class CharacterControl : MonoBehaviour
     public Text poemText;
     public Image poemBackground;
     int lines;
+    bool onLadder = false;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -40,7 +41,14 @@ public class CharacterControl : MonoBehaviour
         camRotation -= Input.GetAxis("Mouse Y") * camRotationSpeed;
         camRotation = Mathf.Clamp(camRotation, -40f, 40f);
         cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0f, 0f));
-        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+        if (onLadder)
+        {
+            rb.velocity = new Vector3(0f, Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
+        }
+		else
+		{
+            rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+		}
         //pickupLocation.transform.position = Input.mousePosition;
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -120,5 +128,21 @@ public class CharacterControl : MonoBehaviour
         lines = Mathf.Clamp(lines, 0, 16);
         poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(350, (lines*15));
         poemBackground.GetComponent<RectTransform>().sizeDelta = new Vector2(375, (lines * 15)+30);
+    }
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Ladder")
+		{
+            onLadder = true;
+		}
+	}
+
+    private void OnTriggerExit(Collider other)
+	{
+        if (other.tag == "Ladder")
+        {
+            onLadder = false;
+        }
     }
 }
