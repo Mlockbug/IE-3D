@@ -26,6 +26,8 @@ public class CharacterControl : MonoBehaviour
     public Image poemBackground;
     int lines;
     bool onLadder = false;
+    public Transform sewerSpawn;
+    public Transform townSpawn;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -41,6 +43,8 @@ public class CharacterControl : MonoBehaviour
         camRotation -= Input.GetAxis("Mouse Y") * camRotationSpeed;
         camRotation = Mathf.Clamp(camRotation, -40f, 40f);
         cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0f, 0f));
+
+
         
         if (onLadder && Input.GetKey(KeyCode.Space))
 		{
@@ -134,23 +138,33 @@ public class CharacterControl : MonoBehaviour
 		{
             lines = 16;
 		}
-        poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(350, (lines*16));
-        poemBackground.GetComponent<RectTransform>().sizeDelta = new Vector2(375, poemText.GetComponent<RectTransform>().Axis.Vertical);
+        poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(350, (lines* 15.1071f));
+        poemBackground.GetComponent<RectTransform>().sizeDelta = new Vector2(375, poemText.GetComponent<RectTransform>().rect.height + 25);
     }
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Ladder")
-		{
-            onLadder = true;
-		}
-	}
+        switch (other.tag)
+        {
+            case "Ladder":
+                onLadder = true;
+                break;
+            case "SewerChange":
+                transform.position = sewerSpawn.position;
+                break;
+            case "TownChange":
+                transform.position = townSpawn.position;
+                break;
+        }
+    }
 
     private void OnTriggerExit(Collider other)
 	{
-        if (other.tag == "Ladder")
-        {
-            onLadder = false;
+        switch (other.tag)
+		{
+            case "Ladder":
+                onLadder = false;
+                break;
         }
     }
 }

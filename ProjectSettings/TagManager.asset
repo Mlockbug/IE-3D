@@ -6,6 +6,9 @@ TagManager:
   tags:
   - barrel
   - Ladder
+  - map
+  - TownChange
+  - SewerChange
   layers:
   - Default
   - TransparentFX
