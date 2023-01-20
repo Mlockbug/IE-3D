@@ -1033,7 +1033,6 @@ GameObject:
   - component: {fileID: 297599805}
   - component: {fileID: 297599804}
   - component: {fileID: 297599803}
-  - component: {fileID: 297599802}
   - component: {fileID: 297599801}
   m_Layer: 0
   m_Name: Cube (15)
@@ -1069,18 +1068,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &297599802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297599799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f92e40f9c004044408073409de50fd2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &297599803
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1155,7 +1142,6 @@ GameObject:
   - component: {fileID: 328666308}
   - component: {fileID: 328666307}
   - component: {fileID: 328666306}
-  - component: {fileID: 328666305}
   - component: {fileID: 328666309}
   m_Layer: 0
   m_Name: Cube (13)
@@ -1178,18 +1164,6 @@ Transform:
   m_Father: {fileID: 2063824771}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
---- !u!114 &328666305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328666303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f92e40f9c004044408073409de50fd2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &328666306
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2867,7 +2841,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -3995,7 +3969,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -462981019419857548, guid: b4a3b576917d1164b83b43e7b6736306, type: 3}
 --- !u!23 &1146896807
 MeshRenderer:
   m_ObjectHideFlags: 0

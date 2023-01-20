@@ -41,9 +41,14 @@ public class CharacterControl : MonoBehaviour
         camRotation -= Input.GetAxis("Mouse Y") * camRotationSpeed;
         camRotation = Mathf.Clamp(camRotation, -40f, 40f);
         cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0f, 0f));
+        
+        if (onLadder && Input.GetKey(KeyCode.Space))
+		{
+            onLadder = false;
+		}
         if (onLadder)
         {
-            rb.velocity = new Vector3(0f, Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
+            rb.velocity = new Vector3(0f, Input.GetAxis("Vertical") * moveSpeed, Input.GetAxis("Horizontal") * moveSpeed);
         }
 		else
 		{
@@ -125,9 +130,12 @@ public class CharacterControl : MonoBehaviour
     public void PoemExtention(int impact)
 	{
         lines += impact;
-        lines = Mathf.Clamp(lines, 0, 16);
-        poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(350, (lines*15));
-        poemBackground.GetComponent<RectTransform>().sizeDelta = new Vector2(375, (lines * 15)+30);
+        if (lines > 16 || lines == 15)
+		{
+            lines = 16;
+		}
+        poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(350, (lines*16));
+        poemBackground.GetComponent<RectTransform>().sizeDelta = new Vector2(375, poemText.GetComponent<RectTransform>().Axis.Vertical);
     }
 
 	private void OnTriggerEnter(Collider other)
