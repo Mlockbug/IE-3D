@@ -12,6 +12,7 @@ TagManager:
   - B-Quest
   - P-Quest
   - pipe
+  - npc
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - 
   - 
   - pickup object
-  - 
+  - npc
   - 
   - 
   - 

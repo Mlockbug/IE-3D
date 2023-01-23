@@ -28,6 +28,7 @@ public class CharacterControl : MonoBehaviour
     bool onLadder = false;
     public Transform sewerSpawn;
     public Transform townSpawn;
+    bool readyForDialogue;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -59,10 +60,14 @@ public class CharacterControl : MonoBehaviour
             rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
 		}
         //pickupLocation.transform.position = Input.mousePosition;
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && readyForDialogue)
         {
-            PickupAndDrop(0f);
+            TryForDialogue();
         }
+        else if (Input.GetKeyDown(KeyCode.E))
+		{
+            PickupAndDrop(0f);
+		}
         if (Input.GetMouseButtonDown(0))
         {
             PickupAndDrop(throwForce);
@@ -115,7 +120,7 @@ public class CharacterControl : MonoBehaviour
         else
         {
             RaycastHit hit;
-            int layerMask = 1 << 8;
+            LayerMask layerMask = 1 << 8;
             if (Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, layerMask))
             {
                 Debug.Log("Hit");
@@ -155,6 +160,9 @@ public class CharacterControl : MonoBehaviour
             case "TownChange":
                 transform.position = townSpawn.position;
                 break;
+            case "npc":
+                readyForDialogue = true;
+                break;
         }
     }
 
@@ -165,6 +173,23 @@ public class CharacterControl : MonoBehaviour
             case "Ladder":
                 onLadder = false;
                 break;
+            case "npc":
+                readyForDialogue = false;
+                break;
         }
+    }
+
+    public void TryForDialogue()
+    {
+        RaycastHit hit;
+        LayerMask layerMask = 1 << 8;
+        if (Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, layerMask))
+        {
+            PickupAndDrop(0f);
+        }
+        else if(Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, 1 << 9))
+        {
+            Debug.Log("E");
+		}
     }
 }
