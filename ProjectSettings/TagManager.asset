@@ -9,6 +9,9 @@ TagManager:
   - map
   - TownChange
   - SewerChange
+  - B-Quest
+  - P-Quest
+  - pipe
   layers:
   - Default
   - TransparentFX
