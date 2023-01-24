@@ -44,8 +44,6 @@ public class CharacterControl : MonoBehaviour
         camRotation -= Input.GetAxis("Mouse Y") * camRotationSpeed;
         camRotation = Mathf.Clamp(camRotation, -40f, 40f);
         cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0f, 0f));
-
-
         
         if (onLadder && Input.GetKey(KeyCode.Space))
 		{
