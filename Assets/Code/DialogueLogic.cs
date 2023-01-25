@@ -34,8 +34,8 @@ public class DialogueLogic : MonoBehaviour
             foreach (string x in sentances)
             {
                 dialogue.Enqueue(x);
-                dialogue.Enqueue("");
             }
+            dialogue.Enqueue("");
             shouldQueue = false;
         }
         if (ready && Input.GetKeyDown(KeyCode.Space))
