@@ -187,6 +187,7 @@ public class CharacterControl : MonoBehaviour
         }
         else if(Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, 1 << 9))
         {
+            hit.collider.GetComponent<DialogueLogic>().ReadyForDialogue();
             Debug.Log("E");
 		}
     }
