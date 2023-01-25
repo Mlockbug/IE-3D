@@ -13,8 +13,6 @@ TagManager:
   - P-Quest
   - pipe
   - npc
-  - npc 1
-  - npc 2
   layers:
   - Default
   - TransparentFX

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DialogueLogic : MonoBehaviour
 {
+    public string[] sentances;
     Queue<string> dialogue = new Queue<string>();
     bool ready = false;
     bool shouldQueue = true;
@@ -21,6 +22,7 @@ public class DialogueLogic : MonoBehaviour
     {
         if (dialogue.Count == 0)
 		{
+            GameObject.Find("Player").GetComponent<CharacterControl>().OutOfDialogue();
             ready = false;
             shouldQueue = true;
             StopAllCoroutines();
@@ -28,28 +30,13 @@ public class DialogueLogic : MonoBehaviour
 		}
         if (shouldQueue)
         {
-            switch (transform.tag)
+            dialogue.Clear();
+            foreach (string x in sentances)
             {
-                case "npc 1":
-                    dialogue.Clear();
-                    dialogue.Enqueue("asasdasdasdasdasdasd");
-                    dialogue.Enqueue("lkjlkjlkjljklkjlkjlkjljl");
-                    dialogue.Enqueue("");
-                    shouldQueue = false;
-                    Debug.Log("Done");
-                    break;
-                case "npc 2":
-                    dialogue.Clear();
-                    dialogue.Enqueue("sadsgfgc");
-                    dialogue.Enqueue("yuo6c");
-                    dialogue.Enqueue("");
-                    shouldQueue = false;
-                    Debug.Log("Done");
-                    break;
-                default:
-                    Debug.Log("cannot");
-                    break;
+                dialogue.Enqueue(x);
+                dialogue.Enqueue("");
             }
+            shouldQueue = false;
         }
         if (ready && Input.GetKeyDown(KeyCode.Space))
 		{

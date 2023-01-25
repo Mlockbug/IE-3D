@@ -15,20 +15,27 @@ public class CharacterControl : MonoBehaviour
     float rotation = 0f;
     Vector3 movement;
     public float moveSpeed = 5f;
+
+
     public float pickupDistance = 5f;
     public GameObject pickupLocation;
     bool holding = false;
     GameObject held;
     public float heldForce = 200f;
     public float throwForce = 50f;
+
+
     public GameObject poem;
     public Text poemText;
     public Image poemBackground;
     int lines;
+
+
     bool onLadder = false;
     public Transform sewerSpawn;
     public Transform townSpawn;
     bool readyForDialogue;
+    bool inDialogue = false;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -37,60 +44,63 @@ public class CharacterControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //movement and rotation
-        movement = ((transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"))) * moveSpeed;
-        rotation += Input.GetAxis("Mouse X") * rotationSpeed;
-        transform.rotation = Quaternion.Euler(new Vector3(0f, rotation, 0f));
-        camRotation -= Input.GetAxis("Mouse Y") * camRotationSpeed;
-        camRotation = Mathf.Clamp(camRotation, -40f, 40f);
-        cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0f, 0f));
-        
-        if (onLadder && Input.GetKey(KeyCode.Space))
-		{
-            onLadder = false;
-		}
-        if (onLadder)
+        if (!(inDialogue))
         {
-            rb.velocity = new Vector3(0f, Input.GetAxis("Vertical") * moveSpeed, Input.GetAxis("Horizontal") * moveSpeed);
-        }
-		else
-		{
-            rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
-		}
-        //pickupLocation.transform.position = Input.mousePosition;
-        if (Input.GetKeyDown(KeyCode.E) && readyForDialogue)
-        {
-            TryForDialogue();
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-		{
-            PickupAndDrop(0f);
-		}
-        if (Input.GetMouseButtonDown(0))
-        {
-            PickupAndDrop(throwForce);
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-		{
-            moveSpeed = 10f;
-		}
-        else
-		{
-            moveSpeed = 5f;
-		}
-        if (Input.GetKey(KeyCode.Tab))
-		{
-            poem.SetActive(true);
-		}
-		else
-		{
-            poem.SetActive(false);
-		}
+            //movement and rotation
+            movement = ((transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"))) * moveSpeed;
+            rotation += Input.GetAxis("Mouse X") * rotationSpeed;
+            transform.rotation = Quaternion.Euler(new Vector3(0f, rotation, 0f));
+            camRotation -= Input.GetAxis("Mouse Y") * camRotationSpeed;
+            camRotation = Mathf.Clamp(camRotation, -40f, 40f);
+            cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0f, 0f));
 
-        if (holding)
-        {
-            held.transform.position = pickupLocation.transform.position;
-            held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
+            if (onLadder && Input.GetKey(KeyCode.Space))
+            {
+                onLadder = false;
+            }
+            if (onLadder)
+            {
+                rb.velocity = new Vector3(0f, Input.GetAxis("Vertical") * moveSpeed, Input.GetAxis("Horizontal") * moveSpeed);
+            }
+            else
+            {
+                rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+            }
+            //pickupLocation.transform.position = Input.mousePosition;
+            if (Input.GetKeyDown(KeyCode.E) && readyForDialogue)
+            {
+                TryForDialogue();
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                PickupAndDrop(0f);
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                PickupAndDrop(throwForce);
+            }
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                moveSpeed = 10f;
+            }
+            else
+            {
+                moveSpeed = 5f;
+            }
+            if (Input.GetKey(KeyCode.Tab))
+            {
+                poem.SetActive(true);
+            }
+            else
+            {
+                poem.SetActive(false);
+            }
+
+            if (holding)
+            {
+                held.transform.position = pickupLocation.transform.position;
+                held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
+            }
         }
     }
 
@@ -187,8 +197,15 @@ public class CharacterControl : MonoBehaviour
         }
         else if(Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, 1 << 9))
         {
+            inDialogue = true;
+            rb.velocity = Vector3.zero;
             hit.collider.GetComponent<DialogueLogic>().ReadyForDialogue();
             Debug.Log("E");
 		}
     }
+
+    public void OutOfDialogue()
+	{
+        inDialogue = false;
+	}
 }
