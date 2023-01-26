@@ -9,8 +9,6 @@ TagManager:
   - map
   - TownChange
   - SewerChange
-  - B-Quest
-  - P-Quest
   - pipe
   - npc
   layers:

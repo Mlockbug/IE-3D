@@ -11,6 +11,7 @@ public class DialogueLogic : MonoBehaviour
     bool shouldQueue = true;
     public Text diagText;
     public GameObject textBox;
+    public GameObject yesOrNoButtons;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +48,7 @@ public class DialogueLogic : MonoBehaviour
 
     public void ReadyForDialogue()
 	{
+        yesOrNoButtons.SetActive(false);
         ready = true;
         StopAllCoroutines();
         StartCoroutine(DisplayDiag());
@@ -54,14 +56,26 @@ public class DialogueLogic : MonoBehaviour
 
     public IEnumerator DisplayDiag()
 	{
-        textBox.SetActive(true);
-        diagText.text = "";
         string diagString = dialogue.Dequeue();
-        foreach(char x in diagString)
-		{
-            diagText.text = diagText.text + x.ToString();
-            Debug.Log(diagText.text);
-            yield return new WaitForSeconds(1);
+
+        if (diagString.Contains("QUEST-"))
+        {
+            string selection = diagString.Split('-')[1];
+            Debug.Log(selection);
+            yesOrNoButtons.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        else
+        {
+            textBox.SetActive(true);
+            diagText.text = "";
+
+            foreach (char x in diagString)
+            {
+                diagText.text = diagText.text + x.ToString();
+                Debug.Log(diagText.text);
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 	}
 }
