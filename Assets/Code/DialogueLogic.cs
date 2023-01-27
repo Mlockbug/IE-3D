@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class DialogueLogic : MonoBehaviour
 {
     public string[] sentances;
+    string diagString;
     Queue<string> dialogue = new Queue<string>();
     bool ready = false;
     bool shouldQueue = true;
     public Text diagText;
     public GameObject textBox;
     public GameObject yesOrNoButtons;
+    bool typing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,8 @@ public class DialogueLogic : MonoBehaviour
     {
         if (dialogue.Count == 0)
 		{
+            textBox.SetActive(false);
+            Debug.Log("WWWW");
             GameObject.Find("Player").GetComponent<CharacterControl>().OutOfDialogue();
             ready = false;
             shouldQueue = true;
@@ -39,15 +43,24 @@ public class DialogueLogic : MonoBehaviour
             dialogue.Enqueue("");
             shouldQueue = false;
         }
-        if (ready && Input.GetKeyDown(KeyCode.Space))
+        if (typing && Input.GetKeyDown(KeyCode.Space))
+		{
+            diagText.text = diagString;
+            typing = false;
+            ready = true;
+        }
+        else if (ready && Input.GetKeyDown(KeyCode.Space))
 		{
             StopAllCoroutines();
             StartCoroutine(DisplayDiag());
+            ready = false;
         }
     }
 
     public void ReadyForDialogue()
 	{
+        Debug.Log("sadsawdas");
+        Cursor.lockState = CursorLockMode.Locked;
         yesOrNoButtons.SetActive(false);
         ready = true;
         StopAllCoroutines();
@@ -56,7 +69,7 @@ public class DialogueLogic : MonoBehaviour
 
     public IEnumerator DisplayDiag()
 	{
-        string diagString = dialogue.Dequeue();
+        diagString = dialogue.Dequeue();
 
         if (diagString.Contains("QUEST-"))
         {
@@ -64,18 +77,30 @@ public class DialogueLogic : MonoBehaviour
             Debug.Log(selection);
             yesOrNoButtons.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
+            FindObjectOfType<QuestManager>().GetQuestNumber(selection);
         }
         else
         {
             textBox.SetActive(true);
             diagText.text = "";
-
+            typing = true;
             foreach (char x in diagString)
             {
-                diagText.text = diagText.text + x.ToString();
-                Debug.Log(diagText.text);
-                yield return new WaitForSeconds(0.1f);
+                if (typing)
+                {
+                    diagText.text = diagText.text + x.ToString();
+                    Debug.Log(diagText.text);
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
         }
 	}
+
+    public void Empty()
+	{
+        dialogue.Clear();
+        Cursor.lockState = CursorLockMode.Locked;
+        yesOrNoButtons.SetActive(false);
+        diagText.text = "";
+    }
 }
