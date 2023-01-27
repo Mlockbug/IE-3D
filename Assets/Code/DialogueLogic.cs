@@ -14,6 +14,7 @@ public class DialogueLogic : MonoBehaviour
     public GameObject textBox;
     public GameObject yesOrNoButtons;
     bool typing = false;
+    public bool accepted;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,7 @@ public class DialogueLogic : MonoBehaviour
     {
         if (dialogue.Count == 0)
 		{
-            textBox.SetActive(false);
+            diagText.gameObject.SetActive(false);
             Debug.Log("WWWW");
             GameObject.Find("Player").GetComponent<CharacterControl>().OutOfDialogue();
             ready = false;
@@ -33,7 +34,15 @@ public class DialogueLogic : MonoBehaviour
             StopAllCoroutines();
             textBox.SetActive(false);
 		}
-        if (shouldQueue)
+
+        if (shouldQueue && accepted)
+		{
+            dialogue.Clear();
+            dialogue.Enqueue(sentances[sentances.Length - 1]);
+            dialogue.Enqueue("");
+            shouldQueue = false;
+        }
+        else if (shouldQueue)
         {
             dialogue.Clear();
             foreach (string x in sentances)
@@ -43,6 +52,7 @@ public class DialogueLogic : MonoBehaviour
             dialogue.Enqueue("");
             shouldQueue = false;
         }
+
         if (typing && Input.GetKeyDown(KeyCode.Space))
 		{
             diagText.text = diagString;
@@ -59,6 +69,7 @@ public class DialogueLogic : MonoBehaviour
 
     public void ReadyForDialogue()
 	{
+        diagText.gameObject.SetActive(true);
         Debug.Log("sadsawdas");
         Cursor.lockState = CursorLockMode.Locked;
         yesOrNoButtons.SetActive(false);
@@ -77,7 +88,7 @@ public class DialogueLogic : MonoBehaviour
             Debug.Log(selection);
             yesOrNoButtons.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
-            FindObjectOfType<QuestManager>().GetQuestNumber(selection);
+            FindObjectOfType<QuestManager>().GetQuestNumber(selection, this.gameObject);
         }
         else
         {

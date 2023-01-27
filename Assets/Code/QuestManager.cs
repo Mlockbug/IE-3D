@@ -5,6 +5,7 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
     public GameObject[] quests;
+    public GameObject INeedThisToWork;
     string questIndex;
     // Start is called before the first frame update
     void Start()
@@ -22,10 +23,12 @@ public class QuestManager : MonoBehaviour
 	{
         int index = int.Parse(questIndex) - 1;
         quests[index].SetActive(true);
+        INeedThisToWork.GetComponent<DialogueLogic>().accepted = true;
 	}
 
-    public void GetQuestNumber(string questNumber)
+    public void GetQuestNumber(string questNumber, GameObject plzWork)
 	{
         questIndex = questNumber;
+        INeedThisToWork = plzWork;
 	}
 }
