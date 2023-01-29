@@ -199,6 +199,7 @@ public class CharacterControl : MonoBehaviour
         {
             inDialogue = true;
             rb.velocity = Vector3.zero;
+            hit.collider.GetComponent<DialogueLogic>().enabled = true;
             hit.collider.GetComponent<DialogueLogic>().ReadyForDialogue();
             Debug.Log("E");
 		}

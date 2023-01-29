@@ -15,6 +15,7 @@ public class DialogueLogic : MonoBehaviour
     public GameObject yesOrNoButtons;
     bool typing = false;
     public bool accepted;
+    public GameObject overworldHelp;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,8 @@ public class DialogueLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        overworldHelp.transform.LookAt(GameObject.Find("Player").GetComponent<Transform>());
+        //overworldHelp.transform.rotation = Quaternion.Euler(0f, overworldHelp.transform.rotation.y, 0f);
         if (dialogue.Count == 0)
 		{
             diagText.gameObject.SetActive(false);
@@ -37,13 +40,16 @@ public class DialogueLogic : MonoBehaviour
 
         if (shouldQueue && accepted)
 		{
+            overworldHelp.SetActive(false);
             dialogue.Clear();
             dialogue.Enqueue(sentances[sentances.Length - 1]);
             dialogue.Enqueue("");
             shouldQueue = false;
+            enabled = false;
         }
         else if (shouldQueue)
         {
+            overworldHelp.SetActive(true);
             dialogue.Clear();
             foreach (string x in sentances)
             {
@@ -80,6 +86,7 @@ public class DialogueLogic : MonoBehaviour
 
     public IEnumerator DisplayDiag()
 	{
+        overworldHelp.SetActive(false);
         diagString = dialogue.Dequeue();
 
         if (diagString.Contains("QUEST-"))
