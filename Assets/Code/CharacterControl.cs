@@ -51,7 +51,7 @@ public class CharacterControl : MonoBehaviour
             rotation += Input.GetAxis("Mouse X") * rotationSpeed;
             transform.rotation = Quaternion.Euler(new Vector3(0f, rotation, 0f));
             camRotation -= Input.GetAxis("Mouse Y") * camRotationSpeed;
-            camRotation = Mathf.Clamp(camRotation, -40f, 40f);
+            camRotation = Mathf.Clamp(camRotation, -80f, 80f);
             cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0f, 0f));
 
             if (onLadder && Input.GetKey(KeyCode.Space))
@@ -60,7 +60,7 @@ public class CharacterControl : MonoBehaviour
             }
             if (onLadder)
             {
-                rb.velocity = new Vector3(0f, Input.GetAxis("Vertical") * moveSpeed, Input.GetAxis("Horizontal") * moveSpeed);
+                rb.velocity = new Vector3(movement.x, movement.z * -1, 0f);
             }
             else
             {
