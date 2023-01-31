@@ -8,7 +8,7 @@ public class MeshActivation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myCollider = GetComponent<MeshCollider>();
+        myCollider = GetComponentInParent<MeshCollider>();
     }
 
     // Update is called once per frame
@@ -20,12 +20,12 @@ public class MeshActivation : MonoBehaviour
     public void OnBecameVisible()
     {
         myCollider.enabled = true;
-        Debug.Log("EEEE");
+        //Debug.Log("EEEE");
     }
 
     public void OnBecameInvisible()
     {
-        Debug.Log("GGGG");
+        //Debug.Log("GGGG");
         myCollider.enabled = false;
     }
 }

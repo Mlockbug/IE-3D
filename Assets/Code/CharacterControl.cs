@@ -140,6 +140,10 @@ public class CharacterControl : MonoBehaviour
                 held.GetComponent<Rigidbody>().drag = 10f;
                 held.AddComponent<ForceDrop>();
                 holding = true;
+                if (hit.collider.tag == "barrel")
+				{
+                    held.GetComponent<BarrelLogic>().pickedUp = true;
+				}
             }
         }
     }
