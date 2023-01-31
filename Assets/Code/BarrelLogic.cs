@@ -32,7 +32,9 @@ public class BarrelLogic : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    //was probably over complicating this, so I commented it out
+
+    /*private void OnTriggerExit(Collider other)
 	{
 		if (other.tag == "pipe")
 		{
@@ -49,9 +51,9 @@ public class BarrelLogic : MonoBehaviour
             Debug.Log("N");
             StopCoroutine(countdownShort());
         }
-    }
+    }*/
 
-    //use time.deltatime for countdownLong, stop all in stay
+    ////use time.deltatime for countdownLong, stop all in stay
     IEnumerator countdownLong()
 	{
         Debug.Log("I");
@@ -59,10 +61,18 @@ public class BarrelLogic : MonoBehaviour
         respawn = true;
 	}
 
-    IEnumerator countdownShort()
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "respawnB")
+        {
+            respawn = true;
+        }
+	}
+
+	/*IEnumerator countdownShort()
     {
         Debug.Log("J");
         yield return new WaitForSeconds(5);
         respawn = true;
-    }
+    }*/
 }

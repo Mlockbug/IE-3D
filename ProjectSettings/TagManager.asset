@@ -11,6 +11,7 @@ TagManager:
   - SewerChange
   - pipe
   - npc
+  - respawnB
   layers:
   - Default
   - TransparentFX
