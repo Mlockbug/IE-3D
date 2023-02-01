@@ -12,6 +12,7 @@ TagManager:
   - pipe
   - npc
   - respawnB
+  - MansionChange
   layers:
   - Default
   - TransparentFX

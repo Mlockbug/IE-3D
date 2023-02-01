@@ -32,8 +32,10 @@ public class CharacterControl : MonoBehaviour
 
 
     bool onLadder = false;
+    Vector3 ladderPos;
     public Transform sewerSpawn;
     public Transform townSpawn;
+    public Transform mansionSpawn;
     bool readyForDialogue;
     bool inDialogue = false;
     void Start()
@@ -60,7 +62,8 @@ public class CharacterControl : MonoBehaviour
             }
             if (onLadder)
             {
-                rb.velocity = new Vector3(movement.x, movement.z * -1, 0f);
+                movement = new Vector3((ladderPos.x-transform.position.x) * Input.GetAxis("Vertical"),0f,(ladderPos.z-transform.position.z) * Input.GetAxis("Horizontal")) * moveSpeed;
+                rb.velocity = new Vector3(0f,movement.x/7, movement.z * -1);
             }
             else
             {
@@ -164,6 +167,7 @@ public class CharacterControl : MonoBehaviour
         switch (other.tag)
         {
             case "Ladder":
+                ladderPos = other.transform.position;
                 onLadder = true;
                 break;
             case "SewerChange":
@@ -172,7 +176,10 @@ public class CharacterControl : MonoBehaviour
             case "TownChange":
                 transform.position = townSpawn.position;
                 break;
-            case "npc":
+			case "MansionChange":
+				transform.position = mansionSpawn.position;
+				break;
+			case "npc":
                 readyForDialogue = true;
                 break;
         }
