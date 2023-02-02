@@ -12,7 +12,7 @@ public class CharacterControl : MonoBehaviour
     float camRotation = 0f;
     public float camRotationSpeed = 1f;
     public float rotationSpeed = 1f;
-    float rotation = 0f;
+    float rotation = -131f;
     Vector3 movement;
     public float moveSpeed = 5f;
 
@@ -36,7 +36,7 @@ public class CharacterControl : MonoBehaviour
     public Transform sewerSpawn;
     public Transform townSpawn;
     public Transform mansionSpawn;
-    bool readyForDialogue;
+    bool diagPrep;
     bool inDialogue = false;
     void Start()
     {
@@ -70,7 +70,7 @@ public class CharacterControl : MonoBehaviour
                 rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
             }
             //pickupLocation.transform.position = Input.mousePosition;
-            if (Input.GetKeyDown(KeyCode.E) && readyForDialogue)
+            if (Input.GetKeyDown(KeyCode.E) && diagPrep)
             {
                 TryForDialogue();
             }
@@ -88,7 +88,7 @@ public class CharacterControl : MonoBehaviour
             }
             else
             {
-                moveSpeed = 5f;
+                moveSpeed = 25f;
             }
             if (Input.GetKey(KeyCode.Tab))
             {
@@ -105,6 +105,10 @@ public class CharacterControl : MonoBehaviour
                 held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
             }
         }
+        else
+        {
+			rb.velocity = Vector3.zero;
+		}
     }
 
     public void PickupAndDrop(float force)
@@ -175,14 +179,27 @@ public class CharacterControl : MonoBehaviour
                 break;
             case "TownChange":
                 transform.position = townSpawn.position;
-                break;
+				rotation = townSpawn.rotation.y - 90f;
+				camRotation = townSpawn.rotation.x;
+				break;
 			case "MansionChange":
+				rb.velocity = Vector3.zero;
 				transform.position = mansionSpawn.position;
 				break;
 			case "npc":
-                readyForDialogue = true;
+                diagPrep = true;
                 break;
-        }
+            case "M-Diag":
+				transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+                rotation = 180f;
+                other.GetComponent<DialogueLogic>().ReadyForDialogue();
+				inDialogue = true;
+				break;
+			case "U-Diag":
+				other.GetComponent<DialogueLogic>().ReadyForDialogue();
+				inDialogue = true;
+				break;
+		}
     }
 
     private void OnTriggerExit(Collider other)
@@ -193,7 +210,7 @@ public class CharacterControl : MonoBehaviour
                 onLadder = false;
                 break;
             case "npc":
-                readyForDialogue = false;
+                diagPrep = false;
                 break;
         }
     }
@@ -210,7 +227,6 @@ public class CharacterControl : MonoBehaviour
         {
             inDialogue = true;
             rb.velocity = Vector3.zero;
-            hit.collider.GetComponent<DialogueLogic>().enabled = true;
             hit.collider.GetComponent<DialogueLogic>().ReadyForDialogue();
             Debug.Log("E");
 		}

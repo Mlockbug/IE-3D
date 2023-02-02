@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BarrelLogic : MonoBehaviour
 {
+
+    //gonna reuse this for the table for a bit as well cause it should work as a simple option before i start to properly bug test it
+
     public bool pickedUp = false;
     bool respawn = false;
     Vector3 spawnPos;

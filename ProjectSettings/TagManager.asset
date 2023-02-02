@@ -13,6 +13,9 @@ TagManager:
   - npc
   - respawnB
   - MansionChange
+  - M-Diag
+  - U-Diag
+  - table
   layers:
   - Default
   - TransparentFX

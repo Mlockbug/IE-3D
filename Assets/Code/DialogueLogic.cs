@@ -11,6 +11,7 @@ public class DialogueLogic : MonoBehaviour
     bool ready = false;
     bool shouldQueue = true;
     public Text diagText;
+    public Text nameBox;
     public GameObject textBox;
     public GameObject yesOrNoButtons;
     bool typing = false;
@@ -38,18 +39,9 @@ public class DialogueLogic : MonoBehaviour
             textBox.SetActive(false);
 		}
 
-        if (shouldQueue && accepted)
-		{
-            overworldHelp.SetActive(false);
-            dialogue.Clear();
-            dialogue.Enqueue(sentances[sentances.Length - 1]);
-            dialogue.Enqueue("");
-            shouldQueue = false;
-            enabled = false;
-        }
-        else if (shouldQueue)
+        if (shouldQueue)
         {
-            overworldHelp.SetActive(true);
+			overworldHelp.SetActive(true);
             dialogue.Clear();
             foreach (string x in sentances)
             {
@@ -61,13 +53,13 @@ public class DialogueLogic : MonoBehaviour
 
         if (typing && Input.GetKeyDown(KeyCode.Space))
 		{
-            diagText.text = diagString;
+			diagText.text = diagString;
             typing = false;
             ready = true;
         }
         else if (ready && Input.GetKeyDown(KeyCode.Space))
 		{
-            StopAllCoroutines();
+			StopAllCoroutines();
             StartCoroutine(DisplayDiag());
             ready = false;
         }
@@ -89,15 +81,33 @@ public class DialogueLogic : MonoBehaviour
         overworldHelp.SetActive(false);
         diagString = dialogue.Dequeue();
 
-        if (diagString.Contains("QUEST-"))
+        if (diagString.Contains("STAGE-"))
         {
             string selection = diagString.Split('-')[1];
             Debug.Log(selection);
-            yesOrNoButtons.SetActive(true);
-            Cursor.lockState = CursorLockMode.Confined;
-            FindObjectOfType<QuestManager>().GetQuestNumber(selection, this.gameObject);
-        }
-        else
+			textBox.SetActive(false);
+			GameObject.Find("Player").GetComponent<CharacterControl>().OutOfDialogue();
+			//yesOrNoButtons.SetActive(true);
+			//Cursor.lockState = CursorLockMode.Confined;
+			FindObjectOfType<QuestManager>().ActivateQuests(selection, this.gameObject);
+		}
+        else if (diagString.Contains("NAME-"))
+        {
+			string selection = diagString.Split('-')[1];
+            nameBox.text = selection;
+            StartCoroutine(DisplayDiag());
+		}
+		else if (diagString.Contains("<i>"))
+		{
+            diagText.fontStyle = FontStyle.Italic;
+			StartCoroutine(DisplayDiag());
+		}
+		else if (diagString.Contains("</i>"))
+		{
+			diagText.fontStyle = FontStyle.Normal;
+			StartCoroutine(DisplayDiag());
+		}
+		else
         {
             textBox.SetActive(true);
             diagText.text = "";
@@ -107,10 +117,11 @@ public class DialogueLogic : MonoBehaviour
                 if (typing)
                 {
                     diagText.text = diagText.text + x.ToString();
-                    Debug.Log(diagText.text);
                     yield return new WaitForSeconds(0.1f);
                 }
             }
+            typing = false;
+            ready = true;
         }
 	}
 

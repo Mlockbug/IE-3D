@@ -36,7 +36,7 @@ public class OpeningLogic : MonoBehaviour
                 counter++;
             }
 
-            if (counter == 6)
+            if (counter >= 6)
             {
                 inCutscene = false;
             }
@@ -46,14 +46,13 @@ public class OpeningLogic : MonoBehaviour
             Color fadeColor = fade.color;
             if (fade.color.a < 1 && fadingOut == false)
             {
-                fadeColor.a += 0.01f;
+                fadeColor.a += 0.005f;
             }
 			else if (fade.color.a >= 0)
 			{
 				cutscenePanels[counter - 1].SetActive(false);
 				fadingOut = true;
-				Debug.Log("ASDASDASDASD");
-				fadeColor.a -= 0.01f;
+				fadeColor.a -= 0.005f;
 				game.SetActive(true);
 			}
 			fadeColor.a = Mathf.Clamp(fadeColor.a,0f,1f);
