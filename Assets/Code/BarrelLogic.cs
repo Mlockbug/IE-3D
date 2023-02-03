@@ -10,6 +10,7 @@ public class BarrelLogic : MonoBehaviour
     public bool pickedUp = false;
     bool respawn = false;
     Vector3 spawnPos;
+    bool pickedOnce = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,9 +22,17 @@ public class BarrelLogic : MonoBehaviour
     {
         if (pickedUp)
 		{
+			Debug.Log("WF");
+			pickedOnce = true;
             StopAllCoroutines();
             StartCoroutine(countdownLong());
             pickedUp = false;
+		}
+
+        if (pickedOnce)
+        {
+            Debug.Log("WY");
+			this.GetComponent<Rigidbody>().isKinematic = false;
 		}
 
         if (respawn)

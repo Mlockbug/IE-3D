@@ -38,6 +38,8 @@ public class CharacterControl : MonoBehaviour
     public Transform mansionSpawn;
     bool diagPrep;
     bool inDialogue = false;
+
+    int herbsCollected;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -88,7 +90,7 @@ public class CharacterControl : MonoBehaviour
             }
             else
             {
-                moveSpeed = 25f;
+                moveSpeed = 5f;
             }
             if (Input.GetKey(KeyCode.Tab))
             {
@@ -104,7 +106,13 @@ public class CharacterControl : MonoBehaviour
                 held.transform.position = pickupLocation.transform.position;
                 held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
             }
-        }
+
+            if (herbsCollected == 3)
+            {
+                herbsCollected= 0;
+				GameObject.Find("Quest Manager").GetComponent<QuestManager>().ActivateQuests("15", null);
+			}
+		}
         else
         {
 			rb.velocity = Vector3.zero;
@@ -147,10 +155,7 @@ public class CharacterControl : MonoBehaviour
                 held.GetComponent<Rigidbody>().drag = 10f;
                 held.AddComponent<ForceDrop>();
                 holding = true;
-                if (hit.collider.tag == "barrel")
-				{
-                    held.GetComponent<BarrelLogic>().pickedUp = true;
-				}
+                held.GetComponent<BarrelLogic>().pickedUp = true;
             }
         }
     }
@@ -199,6 +204,10 @@ public class CharacterControl : MonoBehaviour
 				other.GetComponent<DialogueLogic>().ReadyForDialogue();
 				inDialogue = true;
 				break;
+            case "herbs":
+                Destroy(other.gameObject);
+                herbsCollected++;
+                break;
 		}
     }
 
