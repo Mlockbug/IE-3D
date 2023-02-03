@@ -27,6 +27,11 @@ public class QuestLogic : MonoBehaviour
 			GameObject.Find("Quest Manager").GetComponent<QuestManager>().ActivateQuests("9", null);
             table = false;
 		}
+        if (fencePosts == 2)
+		{
+            GameObject.Find("Quest Manager").GetComponent<QuestManager>().ActivateQuests("12", null);
+            fencePosts = 0;
+        }
     }
 
 	private void OnTriggerEnter(Collider other)
@@ -47,6 +52,9 @@ public class QuestLogic : MonoBehaviour
                     break;
                 case "table":
                     table= true; 
+                    break;
+                case "fence":
+                    fencePosts++;
                     break;
             }
         }
