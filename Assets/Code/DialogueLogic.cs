@@ -17,6 +17,7 @@ public class DialogueLogic : MonoBehaviour
     bool typing = false;
     public bool accepted;
     public GameObject overworldHelp;
+    public GameObject activeSprite;
     // Start is called before the first frame update
     void Start()
     {
@@ -95,6 +96,7 @@ public class DialogueLogic : MonoBehaviour
         {
 			string selection = diagString.Split('-')[1];
             nameBox.text = selection;
+            AddSprite(selection);
             StartCoroutine(DisplayDiag());
 		}
 		else if (diagString.Contains("<i>"))
@@ -132,4 +134,19 @@ public class DialogueLogic : MonoBehaviour
         yesOrNoButtons.SetActive(false);
         diagText.text = "";
     }
+
+	public void AddSprite(string speaker)
+	{
+        activeSprite.SetActive(false);
+        activeSprite = GameObject.Find(speaker + " UI sprite");
+        if (activeSprite != null)
+        {
+            activeSprite.SetActive(true);
+        }
+        else
+        {
+            Debug.Log(speaker + " UI sprite");
+        }
+
+	}
 }

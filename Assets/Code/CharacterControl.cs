@@ -86,11 +86,11 @@ public class CharacterControl : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                moveSpeed = 10f;
+                moveSpeed = 15f;
             }
             else
             {
-                moveSpeed = 5f;
+                moveSpeed = 7.5f;
             }
             if (Input.GetKey(KeyCode.Tab))
             {
