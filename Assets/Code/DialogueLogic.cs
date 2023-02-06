@@ -137,7 +137,10 @@ public class DialogueLogic : MonoBehaviour
 
 	public void AddSprite(string speaker)
 	{
-        activeSprite.SetActive(false);
+        if (activeSprite != null)
+        {
+            activeSprite.SetActive(false);
+        }
         activeSprite = GameObject.Find(speaker + " UI sprite");
         if (activeSprite != null)
         {

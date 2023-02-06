@@ -27,7 +27,7 @@ public class QuestLogic : MonoBehaviour
 			GameObject.Find("Quest Manager").GetComponent<QuestManager>().ActivateQuests("9", null);
             table = false;
 		}
-        if (fencePosts == 2)
+        if (fencePosts == 4)
 		{
             GameObject.Find("Quest Manager").GetComponent<QuestManager>().ActivateQuests("12", null);
             fencePosts = 0;
@@ -44,7 +44,7 @@ public class QuestLogic : MonoBehaviour
                 FindObjectOfType<CharacterControl>().PickupAndDrop(0f);
             }
             Destroy(ThingInCollision.gameObject);
-            FindObjectOfType<CharacterControl>().PoemExtention(Random.Range(2, 4));
+            FindObjectOfType<CharacterControl>().PoemExtention(Random.Range(1, 2));
             switch (other.tag)
             {
                 case "barrel":
