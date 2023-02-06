@@ -84,6 +84,7 @@ public class DialogueLogic : MonoBehaviour
 
         if (diagString.Contains("STAGE-"))
         {
+            AddSprite(null);
             string selection = diagString.Split('-')[1];
             Debug.Log(selection);
 			textBox.SetActive(false);
@@ -135,20 +136,21 @@ public class DialogueLogic : MonoBehaviour
         diagText.text = "";
     }
 
-	public void AddSprite(string speaker)
+	public void AddSprite(string spriteName)
 	{
         if (activeSprite != null)
         {
-            activeSprite.SetActive(false);
+            Debug.Log("FTD");
+            activeSprite.GetComponent<Image>().enabled = false;
         }
-        activeSprite = GameObject.Find(speaker + " UI sprite");
+        activeSprite = GameObject.Find(spriteName + " UI sprite");
         if (activeSprite != null)
         {
-            activeSprite.SetActive(true);
+            activeSprite.GetComponent<Image>().enabled = true;
         }
         else
         {
-            Debug.Log(speaker + " UI sprite");
+            Debug.Log(spriteName + " UI sprite");
         }
 
 	}
