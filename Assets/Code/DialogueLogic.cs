@@ -8,7 +8,7 @@ public class DialogueLogic : MonoBehaviour
     public string[] sentances;
     string diagString;
     Queue<string> dialogue = new Queue<string>();
-    bool ready = false;
+	bool ready = false;
     bool shouldQueue = true;
     public Text diagText;
     public Text nameBox;
@@ -18,8 +18,8 @@ public class DialogueLogic : MonoBehaviour
     public bool accepted;
     public GameObject overworldHelp;
     public GameObject activeSprite;
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
     
     }

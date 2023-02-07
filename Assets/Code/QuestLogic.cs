@@ -57,7 +57,9 @@ public class QuestLogic : MonoBehaviour
                     table= true; 
                     break;
                 case "fence":
-                    fencePosts++;
+                    other.transform.position = fencePositions[fencePosts];
+					other.transform.rotation = Quaternion.Euler(0f,fenceRotation,0f);
+					fencePosts++;
                     break;
             }
         }
