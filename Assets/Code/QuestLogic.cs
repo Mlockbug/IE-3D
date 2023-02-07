@@ -8,6 +8,9 @@ public class QuestLogic : MonoBehaviour
     int barrelCount;
     bool table;
     int fencePosts;
+    Vector3[] fencePositions = new Vector3[4] {new Vector3(-419.76f, 31f, -19.94f), new Vector3(-420.38f, 31f, -19.16f), new Vector3(-421.57f, 24.587f, -17.66f), new Vector3(-422.23f, 24.587f, -16.83f) };
+    float fenceRotation = 51.624f;
+    bool[] positionChecks = new bool[4] {false,false,false,false};
     // Start is called before the first frame update
     void Start()
     {
