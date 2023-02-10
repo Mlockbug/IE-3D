@@ -27,7 +27,6 @@ public class CharacterControl : MonoBehaviour
 
     public GameObject poem;
     public Text poemText;
-    public Image poemBackground;
     int lines;
 
 
@@ -38,18 +37,20 @@ public class CharacterControl : MonoBehaviour
     public Transform mansionSpawn;
     bool diagPrep;
     public bool inDialogue = false;
+    bool pause = false;
 
     int herbsCollected;
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!(inDialogue))
+        if (!inDialogue && !pause)
         {
+            Cursor.lockState = CursorLockMode.Locked;
             //movement and rotation
             movement = ((transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"))) * moveSpeed;
             rotation += Input.GetAxis("Mouse X") * rotationSpeed;
@@ -92,19 +93,11 @@ public class CharacterControl : MonoBehaviour
             {
                 moveSpeed = 7.5f;
             }
-            if (Input.GetKey(KeyCode.Tab))
-            {
-                poem.SetActive(true);
-            }
-            else
-            {
-                poem.SetActive(false);
-            }
+            
 
             if (holding)
             {
-                held.transform.position = pickupLocation.transform.position;
-                held.transform.rotation = Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y));
+                held.transform.SetPositionAndRotation(pickupLocation.transform.position, Quaternion.Euler(new Vector3(held.transform.rotation.x, rotation, held.transform.rotation.y)));
             }
 
             if (herbsCollected == 3)
@@ -117,6 +110,12 @@ public class CharacterControl : MonoBehaviour
         {
 			rb.velocity = Vector3.zero;
 		}
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            poem.SetActive(!poem.activeInHierarchy);
+            pause = !pause;
+        }
     }
 
     public void PickupAndDrop(float force)
@@ -167,8 +166,7 @@ public class CharacterControl : MonoBehaviour
 		{
             lines = 16;
 		}
-        poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(350, (lines* 15.1071f));
-        poemBackground.GetComponent<RectTransform>().sizeDelta = new Vector2(375, poemText.GetComponent<RectTransform>().rect.height + 25);
+        poemText.GetComponent<RectTransform>().sizeDelta = new Vector2(1000, (lines* 37.5f)+0.02f);
     }
 
 	private void OnTriggerEnter(Collider other)
@@ -234,4 +232,10 @@ public class CharacterControl : MonoBehaviour
 	{
         inDialogue = false;
 	}
+
+    public void Resume()
+	{
+        poem.SetActive(!poem.activeInHierarchy);
+        pause = !pause;
+    }
 }
