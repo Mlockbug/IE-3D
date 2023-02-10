@@ -47,7 +47,7 @@ public class QuestLogic : MonoBehaviour
                 FindObjectOfType<CharacterControl>().PickupAndDrop(0f);
             }
             Destroy(ThingInCollision.gameObject);
-            FindObjectOfType<CharacterControl>().PoemExtention(Random.Range(1, 2));
+            FindObjectOfType<CharacterControl>().PoemExtention(Random.Range(1, 3));
             switch (other.tag)
             {
                 case "barrel":

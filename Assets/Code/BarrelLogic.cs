@@ -37,6 +37,7 @@ public class BarrelLogic : MonoBehaviour
 
         if (respawn)
 		{
+            this.GetComponent<Rigidbody>().velocity = Vector3.zero;
             Debug.Log("P");
             FindObjectOfType<CharacterControl>().PickupAndDrop(0f);
             transform.position = spawnPos;

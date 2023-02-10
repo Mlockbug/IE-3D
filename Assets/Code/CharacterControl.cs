@@ -91,7 +91,7 @@ public class CharacterControl : MonoBehaviour
             }
             else
             {
-                moveSpeed = 7.5f;
+                moveSpeed = 10f;
             }
             
 
@@ -110,7 +110,7 @@ public class CharacterControl : MonoBehaviour
         {
 			rb.velocity = Vector3.zero;
 		}
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
             poem.SetActive(!poem.activeInHierarchy);
