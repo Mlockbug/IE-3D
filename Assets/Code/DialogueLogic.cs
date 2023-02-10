@@ -32,7 +32,7 @@ public class DialogueLogic : MonoBehaviour
         if (dialogue.Count == 0)
 		{
             diagText.gameObject.SetActive(false);
-            Debug.Log("WWWW");
+            //Debug.Log("WWWW");
             GameObject.Find("Player").GetComponent<CharacterControl>().OutOfDialogue();
             ready = false;
             shouldQueue = true;
@@ -69,7 +69,7 @@ public class DialogueLogic : MonoBehaviour
     public void ReadyForDialogue()
 	{
         diagText.gameObject.SetActive(true);
-        Debug.Log("sadsawdas");
+        //Debug.Log("sadsawdas");
         Cursor.lockState = CursorLockMode.Locked;
         yesOrNoButtons.SetActive(false);
         ready = true;
@@ -140,7 +140,7 @@ public class DialogueLogic : MonoBehaviour
 	{
         if (activeSprite != null)
         {
-            Debug.Log("FTD");
+            //Debug.Log("FTD");
             activeSprite.GetComponent<Image>().enabled = false;
         }
         activeSprite = GameObject.Find(spriteName + " UI sprite");

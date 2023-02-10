@@ -9,10 +9,10 @@ public class CharacterControl : MonoBehaviour
 
     public Rigidbody rb;
     public GameObject cam;
-    float camRotation = 0f;
+    public float camRotation = 0f;
     public float camRotationSpeed = 1f;
     public float rotationSpeed = 1f;
-    float rotation = -131f;
+    public float rotation = -131f;
     Vector3 movement;
     public float moveSpeed = 5f;
 
@@ -37,7 +37,7 @@ public class CharacterControl : MonoBehaviour
     public Transform townSpawn;
     public Transform mansionSpawn;
     bool diagPrep;
-    bool inDialogue = false;
+    public bool inDialogue = false;
 
     int herbsCollected;
     void Start()
@@ -142,7 +142,7 @@ public class CharacterControl : MonoBehaviour
         }
         else
         {
-            RaycastHit hit;
+			RaycastHit hit;
             LayerMask layerMask = 1 << 8;
             if (Physics.Raycast(cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, pickupDistance, layerMask))
             {
@@ -182,21 +182,10 @@ public class CharacterControl : MonoBehaviour
             case "SewerChange":
                 transform.position = sewerSpawn.position;
                 break;
-            case "TownChange":
-                transform.position = townSpawn.position;
-				rotation = townSpawn.rotation.y - 90f;
-				camRotation = townSpawn.rotation.x;
-				break;
-			case "MansionChange":
-				rb.velocity = Vector3.zero;
-				transform.position = mansionSpawn.position;
-				break;
 			case "npc":
                 diagPrep = true;
                 break;
             case "M-Diag":
-				transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
-                rotation = 180f;
                 other.GetComponent<DialogueLogic>().ReadyForDialogue();
 				inDialogue = true;
 				break;

@@ -59,11 +59,11 @@ public class OpeningLogic : MonoBehaviour
             fade.color = fadeColor;
 			if (fadingOut && fade.color.a <= 0)
             {
-                fade.gameObject.SetActive(false);
+                fade.enabled = false;
                 backupCam.SetActive(false);
 				Destroy(this.gameObject);
             }
-            Debug.Log(fadeColor.a);
+            //Debug.Log(fadeColor.a);
 		}
     }
 }
