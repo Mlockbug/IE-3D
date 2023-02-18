@@ -27,7 +27,8 @@ public class DialogueLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        overworldHelp.transform.LookAt(GameObject.Find("Player").GetComponent<Transform>());
+        this.transform.LookAt(new Vector3(GameObject.Find("Player").transform.position.x, this.transform.position.y, GameObject.Find("Player").transform.position.z));
+        overworldHelp.transform.LookAt(new Vector3(GameObject.Find("Player").transform.position.x, overworldHelp.transform.position.y, GameObject.Find("Player").transform.position.z));
         //overworldHelp.transform.rotation = Quaternion.Euler(0f, overworldHelp.transform.rotation.y, 0f);
         if (dialogue.Count == 0)
 		{
@@ -120,7 +121,10 @@ public class DialogueLogic : MonoBehaviour
                 if (typing)
                 {
                     diagText.text = diagText.text + x.ToString();
-                    yield return new WaitForSeconds(0.1f);
+                    if (x.ToString() != " ")
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                    }
                 }
             }
             typing = false;
