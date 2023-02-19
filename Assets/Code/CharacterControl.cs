@@ -133,7 +133,6 @@ public class CharacterControl : MonoBehaviour
             else
 			{
                 held.GetComponent<Rigidbody>().AddForce((held.transform.position - transform.position) * force);
-
             }
             Destroy(held.GetComponent<ForceDrop>());
             held = null;

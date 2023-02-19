@@ -111,6 +111,10 @@ public class DialogueLogic : MonoBehaviour
 			diagText.fontStyle = FontStyle.Normal;
 			StartCoroutine(DisplayDiag());
 		}
+        else if (diagString == "ENDGAME")
+        {
+            GameObject.Find("Cutscene manager").GetComponent<CutsceneLogic>().EndingActive();
+        }
 		else
         {
             textBox.SetActive(true);
