@@ -110,8 +110,8 @@ public class CutsceneLogic : MonoBehaviour
 
     IEnumerator EndCutscene() 
     {
-        //this.GetComponent<AudioSource>().PlayOneShot(poemAudio);
-        yield return new WaitForSeconds(0);
+        this.GetComponent<AudioSource>().PlayOneShot(poemAudio);
+        yield return new WaitForSeconds(47);
         mustFade = true;
         creditsActive= true;
     }
