@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class CutsceneLogic : MonoBehaviour
 {
@@ -15,19 +16,30 @@ public class CutsceneLogic : MonoBehaviour
     bool mustFade = false;
     bool ending = false;
     public AudioClip poemAudio;
+    public AudioSource audioPlayer;
     public GameObject endCutscene;
     bool creditsActive = false;
     bool mustScroll = false;
 
-    // Start is called before the first frame update
-    void Start()
+    public AudioClip[] music;
+	public int tempActiveMusic;
+	public int activeMusic;
+    float volume = 1.0f;
+
+	// Start is called before the first frame update
+	void Start()
     {
-        
+        audioPlayer= GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (tempActiveMusic != activeMusic)
+        {
+            activeMusic = tempActiveMusic;
+            MusicChange();
+        }
         if (inCutscene)
         {
             foreach (GameObject panel in cutscenePanels)
@@ -110,9 +122,27 @@ public class CutsceneLogic : MonoBehaviour
 
     IEnumerator EndCutscene() 
     {
-        this.GetComponent<AudioSource>().PlayOneShot(poemAudio);
+		audioPlayer.loop = false;
+		audioPlayer.PlayOneShot(poemAudio);
         yield return new WaitForSeconds(47);
         mustFade = true;
         creditsActive= true;
     }
+
+    void MusicChange()
+    {
+        audioPlayer.loop = true;
+        while (volume > 0)
+        {
+            volume -= 0.03f;
+            audioPlayer.volume= volume;
+        }
+        audioPlayer.clip = music[activeMusic];
+        audioPlayer.Play();
+		while (volume < 1)
+		{
+			volume += 0.03f;
+			audioPlayer.volume = volume;
+		}
+	}
 }

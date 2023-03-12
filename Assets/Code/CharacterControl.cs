@@ -40,6 +40,8 @@ public class CharacterControl : MonoBehaviour
     bool pause = false;
 
     int herbsCollected;
+
+    int currentMusic;
     void Start()
     {
 
@@ -48,6 +50,8 @@ public class CharacterControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GameObject.Find("Cutscene manager").GetComponent<CutsceneLogic>().tempActiveMusic = currentMusic;
+
         if (!inDialogue && !pause)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -194,6 +198,15 @@ public class CharacterControl : MonoBehaviour
                 Destroy(other.gameObject);
                 herbsCollected++;
                 break;
+            case "M-Music":
+                currentMusic = 0;
+                break;
+			case "S-Music":
+				currentMusic = 1;
+				break;
+			case "T-Music":
+				currentMusic = 2;
+				break;
 		}
     }
 

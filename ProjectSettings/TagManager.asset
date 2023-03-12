@@ -18,6 +18,9 @@ TagManager:
   - table
   - fence
   - herbs
+  - M-Music
+  - S-Music
+  - T-Music
   layers:
   - Default
   - TransparentFX
