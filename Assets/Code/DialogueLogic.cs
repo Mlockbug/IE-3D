@@ -98,8 +98,15 @@ public class DialogueLogic : MonoBehaviour
         {
 			string selection = diagString.Split('-')[1];
             nameBox.text = selection;
+            AddSprite(selection+ " default");
+            StartCoroutine(DisplayDiag());
+		}
+		else if (diagString.Contains("EMOTION-"))
+		{
+			string selection = diagString.Split('-')[1];
             AddSprite(selection);
             StartCoroutine(DisplayDiag());
+            
 		}
 		else if (diagString.Contains("<i>"))
 		{

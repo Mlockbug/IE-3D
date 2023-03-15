@@ -8,7 +8,7 @@ public class QuestLogic : MonoBehaviour
     int barrelCount;
     bool table;
     int fencePosts;
-    Vector3[] fencePositions = new Vector3[4] {new Vector3(-419.76f, 31f, -19.94f), new Vector3(-420.38f, 31f, -19.16f), new Vector3(-421.57f, 24.587f, -17.66f), new Vector3(-422.23f, 24.587f, -16.83f) };
+    Vector3[] fencePositions = new Vector3[4] {new Vector3(-585.7552f, 53.06111f, -61.10086f), new Vector3(-586.39f, 53.06111f, -60.14f), new Vector3(-588.44f, 46.64f, -57.86f), new Vector3(-587.84f, 46.64f, -58.78f)};
     float fenceRotation = 51.624f;
     bool[] positionChecks = new bool[4] {false,false,false,false};
     // Start is called before the first frame update
@@ -46,18 +46,25 @@ public class QuestLogic : MonoBehaviour
             {
                 FindObjectOfType<CharacterControl>().PickupAndDrop(0f);
             }
-            Destroy(ThingInCollision.gameObject);
+            
             FindObjectOfType<CharacterControl>().PoemExtention(Random.Range(1, 3));
             switch (other.tag)
             {
                 case "barrel":
                     barrelCount++;
-                    break;
+					Destroy(ThingInCollision.gameObject);
+					break;
                 case "table":
-                    table= true; 
-                    break;
+                    table= true;
+					Destroy(ThingInCollision.gameObject);
+					break;
                 case "fence":
-                    other.transform.localPosition = fencePositions[fencePosts];
+					ThingInCollision.attachedRigidbody.useGravity= false;
+                    ThingInCollision.attachedRigidbody.velocity= Vector3.zero;
+					Destroy(ThingInCollision.GetComponent<BoxCollider>());
+					Destroy(ThingInCollision.GetComponent<Rigidbody>());
+					Destroy(ThingInCollision.GetComponent<BarrelLogic>());
+					other.transform.localPosition = fencePositions[fencePosts];
 					other.transform.rotation = Quaternion.Euler(0f,fenceRotation,0f);
 					fencePosts++;
                     break;

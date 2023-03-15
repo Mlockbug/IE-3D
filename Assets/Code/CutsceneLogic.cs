@@ -98,7 +98,7 @@ public class CutsceneLogic : MonoBehaviour
             //Debug.Log(fadeColor.a);
 		}
 
-        if (mustScroll && endCutscene.GetComponent<RectTransform>().localPosition.y < 1550)
+        if (mustScroll && endCutscene.GetComponent<RectTransform>().localPosition.y < 1900)
         {
             endCutscene.GetComponent<Rigidbody>().velocity = Vector3.up * 100;
         }
